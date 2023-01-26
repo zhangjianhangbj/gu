@@ -1,0 +1,47 @@
+server:
+  port: 8180
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+    context-path: /report
+spring:
+  application:
+    name: gu-service-web
+  profiles:
+    active: dev
+
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+        #此处根据环境不同替换不同的配置中心地址
+        server-addr: 192.168.1.149:8848
+        group: 
+        namespace: 0e9b084f-60e6-4ade-84aa-71a0fb0631f0
+        extension-configs[0]:
+          #扩展配置文件名
+          data-id: gu-service-web.yaml
+          #默认分组名称
+          group: DEFAULT_GROUP
+          #动态刷新
+          refresh: true
+      discovery:
+        register-enabled: true
+        #此处根据环境不同替换不同的注册中心地址
+        server-addr: 192.168.1.149:8848
+        namespace: 0e9b084f-60e6-4ade-84aa-71a0fb0631f0
+        group: DEFAULT_GROUP
+  main:
+    allow-bean-definition-overriding: true
+
+rest:
+  http:
+    maxTotal:1000
+    defaultMaxPerRoute:300
+    socketTimeout:60000
+    connectTimeout:60000
+    connectionRequestTimeout:50000

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+	<property name="LOG_HOME" value="logs/" />
+	
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} traceId:%X{traceId} [%thread] [%level] [%class:%line] - %m %n
+			</pattern>
+		</encoder>
+	</appender>
+
+
+	<appender name="FILE-OUT"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/migu-server-report.log</file>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} traceId:%X{traceId} [%thread] [%level] [%class:%line] - %m %n
+			</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/migu-server-manage.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<!-- 30 days -->
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+
+	<root level="info">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE-OUT" />
+	</root>
+</configuration>

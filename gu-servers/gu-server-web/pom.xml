@@ -1,0 +1,164 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.zjh.web</groupId>
+    <artifactId>gu-servers</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>gu-server-web</artifactId>
+  
+  
+	<dependencies>
+
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>gu-tool</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+		   <groupId>org.elasticsearch.client</groupId>
+		   <artifactId>elasticsearch-rest-high-level-client</artifactId>
+		   <version>7.7.0</version>
+		  </dependency>
+		  <dependency>
+		   <groupId>org.elasticsearch.client</groupId>
+		   <artifactId>elasticsearch-rest-client</artifactId>
+		   <version>7.7.0</version>
+		  </dependency>
+		  <dependency>
+		   <groupId>org.elasticsearch</groupId>
+		   <artifactId>elasticsearch</artifactId>
+		   <version>7.7.0</version>
+		  </dependency>
+		  
+	</dependencies>
+	
+	<profiles>
+        <profile>
+            <!-- 本地开发环境 -->
+            <id>dev</id>
+            <properties>
+                <profiles.environment>dev</profiles.environment>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <!-- 测试环境 -->
+            <id>test</id>
+            <properties>
+                <profiles.environment>test</profiles.environment>
+            </properties>
+            <!-- <activation> <activeByDefault>true</activeByDefault> </activation> -->
+        </profile>
+        <profile>
+            <!-- 灰度环境/公测环境 -->
+            <id>uat</id>
+            <properties>
+                <profiles.environment>uat</profiles.environment>
+            </properties>
+            <!-- <activation> <activeByDefault>true</activeByDefault> </activation> -->
+        </profile>
+        <profile>
+            <!-- 生产环境 -->
+            <id>online</id>
+            <properties>
+                <profiles.environment>online</profiles.environment>
+            </properties>
+        </profile>
+
+    </profiles>
+
+    <build>
+        <finalName>gu-server-web</finalName>
+
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/**</include>
+                </includes>
+                <excludes>
+                    <exclude>maven_config/**</exclude>
+                     <exclude>config/**</exclude>
+<!--                    <exclude>cert/**</exclude>-->
+                </excludes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <!-- 跳过测试 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.zjh.Application</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                        <manifestEntries>
+                            <Class-Path>./</Class-Path>
+                        </manifestEntries>
+                    </archive>
+                    <excludes>
+                        <exclude>config/**</exclude>
+                        <exclude>maven_config/**</exclude>
+                        <exclude>config/**</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptors>
+                        <descriptor>package.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+  
+</project>

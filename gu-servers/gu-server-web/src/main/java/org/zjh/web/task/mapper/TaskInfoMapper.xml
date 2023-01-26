@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zjh.web.task.mapper.TaskInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.zjh.web.task.entity.TaskInfo">
+        <id column="id" property="id"/>
+        <result column="name" property="name" />
+        <result column="type" property="type" />
+        <result column="exce_time" property="exceTime" />
+        <result column="exce_type" property="exceType" />
+        <result column="exce_range" property="exceRange" />
+        
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, type, exce_time, exce_range, exce_type
+    </sql>
+    
+    <select id="list" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from task_info
+        <include refid="Common_Query_Where"/>
+        order by id desc
+    </select>
+	
+    <sql id="Common_Query_Where">
+	    <where>
+	    	<if test="name != null and name != ''">
+	            and name like #{score, jdbcType=VARCHAR}
+	        </if>
+	        <if test="type != null">
+	            and type = #{type, jdbcType=INTEGER}
+	        </if>
+	        
+	    </where>
+    </sql>
+
+</mapper>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="js/jquery.js" ></script>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/vue-resource.min.js"></script>
+    <meta charset="utf-8"/>
+    <title>场景管理</title>
+</head>
+<body>
+<div class="content">
+	<div>
+	分值过滤：<input type="text" v-model="pageHelper.params.score" maxlength="5" value="25" >
+	<select v-model="pageHelper.pageSize" >
+		<option value="10">10</option>
+		<option value="30">30</option>
+		<option value="50">50</option>
+		<option value="100">100</option>
+	</select>
+	<br/>
+	
+	<label v-for="sf in categorys" ><input type="checkbox" v-model="category[$index]" />{{sf.category}}({{sf.count}})</label>
+	<br/>
+	排序：<label><input type="radio" name="sort" value="score desc" v-model="pageHelper.params.sort" />分值</label> 
+	<label><input type="radio" name="sort" value="category asc,score desc" v-model="pageHelper.params.sort" /> 分类 </label>
+	<button type="button" v-on:click.stop="search">搜索</button>
+	</div>
+	<span v-for="sf in dataResult" ><a>{{sf.category}}</a>
+	<img width="400" height="210" title="{{sf.category}}" src="http://image.sinajs.cn/newchart/daily/n/{{sf.exchange}}{{sf.code}}.gif" /></span>
+</div>
+</body>
+<script type="text/javascript">
+
+    var vue = new Vue({
+        el: '.content',
+        data: {
+            //页面 分页工具变量
+            pageHelper: {
+                page: 1, //当前页面 初始化
+                pageSize: 10,		//页面展示条数初始化
+				params:{sort:"score desc",score:25}
+            },
+			category:[],
+			categorys:[],
+            dataResult: []
+        },
+		
+        methods: {
+            loadHq: function (taskId) {
+				this.$data.pageHelper.params["taskId"]=taskId;
+                this.$http.post("http://localhost/report/taskReport/list",this.$data.pageHelper).then(function (json) {
+					this.$data.dataResult = json.body.content;
+					var category = [];
+					var fl = json.body.facetList;
+					for(let i=0; i<fl.length; i++){
+						category.push(false);
+					}
+					this.$data.category = category;
+					this.$data.categorys=json.body.facetList;
+                }, function (e) {
+                    console.log(e);
+                });
+                
+            },search: function () {
+				var cv = [];
+				var category = this.$data.category;
+				
+				for(let i=0; i<category.length; i++){
+					if(category[i]){
+						cv.push(this.$data.categorys[i].category);
+					}
+				}
+			
+				this.$data.pageHelper.params["category"]=cv;
+                this.$http.post("http://localhost/report/taskReport/list",this.$data.pageHelper).then(function (json) {
+                    console.info(json.body.content);
+					this.$data.dataResult = json.body.content;
+                }, function (e) {
+                    console.log(e);
+                });
+                
+            }
+        }
+    })
+
+function getParams(){
+	var url=window.location.search;
+	var params = new Object();
+    if(url.indexOf("?")!=-1)
+    {
+    	var str = url.substr(1)　//去掉?号
+    	strs = str.split("&");
+    	for(var i=0;i<strs.length;i++)
+        {
+    		params[strs[i ].split("=")[0]]=strs[ i].split("=")[1];
+        }
+    }
+	return params;
+};
+	var param = getParams();
+
+    vue.loadHq(param.taskId);
+</script>
+</html>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zjh.web.gp.mapper.GpInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.zjh.web.gp.entity.GpInfo">
+        <result column="exchange" property="exchange" />
+        <result column="code" property="code" />
+        <result column="name" property="name" />
+        <result column="category" property="category" />
+        <result column="pb" property="pb" />
+        <result column="pe" property="pe" />
+        <result column="equity" property="equity" />
+        <result column="equity_total" property="equityTotal" />
+        <result column="lianyang" property="lianyang" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="del_flag" property="delFlag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        exchange, code, name, category, pb, pe, equity, equity_total, lianyang, create_time, update_time, del_flag
+    </sql>
+	
+	<select id="listByParam" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from gp_info
+        <include refid="Common_Query_Where"/>
+    </select>
+
+	
+    <sql id="Common_Query_Where">
+    <where>
+        <if test="code != null and code != ''">
+            and code = #{code,jdbcType=VARCHAR}
+        </if>
+        and del_flag = 0;
+    </where>
+  </sql>
+	
+</mapper>

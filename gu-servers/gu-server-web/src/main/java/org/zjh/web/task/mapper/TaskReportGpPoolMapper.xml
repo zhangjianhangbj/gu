@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zjh.web.task.mapper.TaskReportGpPoolMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.zjh.web.task.entity.TaskReportGpPool">
+        <result column="task_id" property="taskId" />
+        <result column="code" property="code" />
+        <result column="create_time" property="createTime" />
+        <result column="score" property="score" />
+        <result column="name" property="name" />
+        <result column="category" property="category" />
+        <result column="exchange" property="exchange" />
+    </resultMap>
+ 
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        task_id, code, create_time, score, name, category, exchange
+    </sql>
+    
+    <select id="listByParams" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from task_report_gp_pool
+        <include refid="Common_Query_Where"/>
+        order by ${sort}
+    </select>
+
+	<select id="facetListByParams" resultType="java.util.Map">
+        select category,count(*) as count from task_report_gp_pool
+        <include refid="Common_Query_Where"/>
+        group by category
+    </select>
+	
+    <sql id="Common_Query_Where">
+	    <where>
+	    	<if test="score != null and score != ''">
+	            and score &gt;= #{score, jdbcType=FLOAT}
+	        </if>
+	        <if test="taskId != null and taskId != 0">
+	            and task_id = #{taskId, jdbcType=INTEGER}
+	        </if>
+	        <if test="category != null and category.size() != 0">
+		        and category IN
+		        <foreach collection="category" index="index" item="name" separator="," close=")" open="(">
+		            #{name, jdbcType=VARCHAR}
+		        </foreach>
+		    </if>
+	    </where>
+    </sql>
+
+</mapper>

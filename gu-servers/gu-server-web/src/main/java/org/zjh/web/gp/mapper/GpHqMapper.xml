@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zjh.web.gp.mapper.GpHqMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.zjh.web.gp.entity.GpHq">
+        <result column="code" property="code" />
+        <result column="date" property="date" />
+        <result column="s" property="s" />
+        <result column="e" property="e" />
+        <result column="h" property="h" />
+        <result column="l" property="l" />
+        <result column="udr" property="udr" />
+        <result column="udm" property="udm" />
+        <result column="n" property="n" />
+        <result column="m" property="m" />
+        <result column="ch" property="ch" />
+        <result column="zf" property="zf" />
+        <result column="avg" property="avg" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        code, date, s, e, h, l, udr, udm, n, m, ch, zf, avg
+    </sql>
+    
+    <select id="listByDate" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from gp_hq
+        <include refid="Common_Query_Where"/>
+        order by code desc, date asc
+    </select>
+
+	
+    <sql id="Common_Query_Where">
+	    <where>
+	    	<if test="startTime != null and startTime != ''">
+	            and date &gt;= #{startTime,jdbcType=VARCHAR}
+	        </if>
+	        <if test="code != null and code != ''">
+	            and code in (#{code,jdbcType=VARCHAR})
+	        </if>
+	    </where>
+    </sql>
+
+</mapper>
