@@ -1,0 +1,11 @@
+**/.svn
+**/.project
+**/.classpath
+**/.settings
+**/target
+*.idea
+**/.idea
+*.iml
+*.log
+*.tar.gz
+**/.metadata
