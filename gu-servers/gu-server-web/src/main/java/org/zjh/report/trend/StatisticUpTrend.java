@@ -29,7 +29,7 @@ public class StatisticUpTrend {
 		Float v = sum(ca);
 		List<Float> au = StatisticUtil.countAvgUp(list, new int[]{1,2});
 		v = v + sum(au);
-		List<Float> ur = StatisticUtil.countUpRange(list, new float[]{0f,5f});
+		List<Float> ur = StatisticUtil.countUpRange(list, new float[]{2f,5f});
 		v = v + sum(ur);
 		List<Float> ly = StatisticUtil.countLianyang(list);
 		v = v + sum(ly);

@@ -42,7 +42,10 @@ public class GpHq implements Serializable {
 		this.n = ja.getIntValue(7);
 		this.m = ja.getFloatValue(8);
 		this.ch = DataTypeUtil.getFloatP(ja.get(9), 0f);
+		this.zf = (this.h-this.l)/(this.e-this.udm)*100;
+		this.zf = Float.parseFloat(String.format("%.2f", this.zf));
 		this.code = code;
+		
 //		this.name = name;
 	}
 
@@ -82,7 +85,7 @@ public class GpHq implements Serializable {
     public Float ch;
 
     @ApiModelProperty("振幅")
-    public Integer zf;
+    public Float zf;
 
     @ApiModelProperty("均线")
     public String avg;
@@ -171,11 +174,11 @@ public class GpHq implements Serializable {
 	public void setCh(Float ch) {
 		this.ch = ch;
 	}
-	public Integer getZf() {
+	public Float getZf() {
 		return zf;
 	}
 
-	public void setZf(Integer zf) {
+	public void setZf(Float zf) {
 		this.zf = zf;
 	}
 

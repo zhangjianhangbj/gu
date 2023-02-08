@@ -18,6 +18,11 @@ public class GpHqUtil {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		System.out.println("historySearchHandler(12345)".substring(21,26));
+		GpInfo gpinfo = new GpInfo();
+		gpinfo.setCode("600105");
+		gpinfo.setName("");
+		List<GpHq> list = getHqData(gpinfo, "20230120", "20230120");
+		System.out.println(list);
 	}
 
 	public static List<GpHq> getHqData(GpInfo gp, String st, String et){

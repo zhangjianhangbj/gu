@@ -1,7 +1,9 @@
 package org.zjh.web.gp.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.zjh.common.SchedulingWordConfig;
 import org.zjh.util.DateConvertUtil;
@@ -19,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -46,7 +49,7 @@ public class GpHqServiceImpl extends ServiceImpl<GpHqMapper, GpHq> implements IG
 	}
 
 	@Override
-	public void updateGpHq() {
+	public void updateGpHq(String date) {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -58,13 +61,19 @@ public class GpHqServiceImpl extends ServiceImpl<GpHqMapper, GpHq> implements IG
 					return ;
 				}
 				List<GpHq> listhq = new ArrayList<GpHq>(); 
-				String startTime = DateConvertUtil.getYesterdayDate(-30, "yyyyMMdd");
-				String endTime = "20230120";//DateConvertUtil.getDateTimeNow("yyyyMMdd");
+				String startTime = DateConvertUtil.getAddDate(-30, date, "yyyyMMdd");
+				String endTime = date;
+				
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("date", endTime);
+				gpHqMapper.deleteByMap(map);
+				
 				int flag= 0;
 				int count =0;
 				List<String> codes = new ArrayList<String>();
 				for (int i = 0; i < list.size(); i++) {
 					GpInfo gpinfo = list.get(i);
+					
 					//flag 大于20 说名 今天是节假日， 没有股票行情 直接退出
 					if(flag >=20){
 						log.info("update exit codes:{}", codes);

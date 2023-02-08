@@ -62,8 +62,10 @@ public class SchedulingWordConfig {
     
     @Scheduled(cron = "${scheduling.corn.update.hq:0 0 18 * * ?}") // 每10分钟执行一次 cron = "0 0/1 * * * ?"
     public void updateHQ() {
-    	log.info("update.hq init...");
-		gpHqService.updateGpHq();
+    	String date = DateConvertUtil.getDateTimeNow("yyyyMMdd");
+    	
+    	log.info("update.hq init date{} ...",date);
+		gpHqService.updateGpHq(date);
 		
     }
 }

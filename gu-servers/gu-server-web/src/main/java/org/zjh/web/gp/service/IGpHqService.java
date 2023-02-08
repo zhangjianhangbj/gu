@@ -18,5 +18,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IGpHqService extends IService<GpHq> {
 	public List<GpHq> listByDate(GpInfoReq gp);
 	
-	public void updateGpHq();
+	public void updateGpHq(String date);
 }

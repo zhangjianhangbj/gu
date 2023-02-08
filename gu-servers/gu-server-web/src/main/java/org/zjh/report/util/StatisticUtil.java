@@ -117,7 +117,7 @@ public class StatisticUtil {
 	}
 	
 	/**
-	 * 统计是否连续收阳
+	 * 统计涨幅区间 是否满足
 	 * @param list 股票行情
 	 * @return
 	 */

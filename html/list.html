@@ -6,6 +6,14 @@
 <script type="text/javascript" src="js/vue-resource.min.js"></script>
     <meta charset="utf-8"/>
     <title>场景管理</title>
+	<style>
+		.dis{
+			display: block;
+		}
+		.dis_block{
+			display:inline-block;
+		}
+	</style>
 </head>
 <body>
 <div class="content">
@@ -16,6 +24,7 @@
 		<option value="30">30</option>
 		<option value="50">50</option>
 		<option value="100">100</option>
+		<option value="100">500</option>
 	</select>
 	<br/>
 	
@@ -25,7 +34,7 @@
 	<label><input type="radio" name="sort" value="category asc,score desc" v-model="pageHelper.params.sort" /> 分类 </label>
 	<button type="button" v-on:click.stop="search">搜索</button>
 	</div>
-	<span v-for="sf in dataResult" ><a>{{sf.category}}</a>
+	<span v-for="sf in dataResult" class="dis_block"><a class="dis">{{sf.category}}</a>
 	<img width="400" height="210" title="{{sf.category}}" src="http://image.sinajs.cn/newchart/daily/n/{{sf.exchange}}{{sf.code}}.gif" /></span>
 </div>
 </body>
@@ -48,7 +57,7 @@
         methods: {
             loadHq: function (taskId) {
 				this.$data.pageHelper.params["taskId"]=taskId;
-                this.$http.post("http://localhost/report/taskReport/list",this.$data.pageHelper).then(function (json) {
+                this.$http.post("/guweb/taskReport/list",this.$data.pageHelper).then(function (json) {
 					this.$data.dataResult = json.body.content;
 					var category = [];
 					var fl = json.body.facetList;
@@ -72,7 +81,7 @@
 				}
 			
 				this.$data.pageHelper.params["category"]=cv;
-                this.$http.post("http://localhost/report/taskReport/list",this.$data.pageHelper).then(function (json) {
+                this.$http.post("/guweb/taskReport/list",this.$data.pageHelper).then(function (json) {
                     console.info(json.body.content);
 					this.$data.dataResult = json.body.content;
                 }, function (e) {

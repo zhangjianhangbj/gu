@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(tags = "")
 @RestController
-@RequestMapping("/task/taskGpPool")
+@RequestMapping("/taskGpPool")
 public class TaskGpPoolController {
 
     private Logger log = LoggerFactory.getLogger(TaskGpPoolController.class);

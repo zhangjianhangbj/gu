@@ -7,7 +7,7 @@ server:
       charset: UTF-8
       force: true
       enabled: true
-    context-path: /report
+    context-path: /guweb
 spring:
   application:
     name: gu-service-web
