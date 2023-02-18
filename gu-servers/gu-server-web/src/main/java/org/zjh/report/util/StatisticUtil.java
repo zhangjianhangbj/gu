@@ -137,4 +137,25 @@ public class StatisticUtil {
 		return res;
 	}
 	
+	/**
+	 * 统计振幅区间 是否满足
+	 * @param list 股票行情
+	 * @return
+	 */
+	public static List<Float> countZFRange(List<GpHq> list, float [] range){
+		if(list ==null)
+			return null;
+		List<Float> res = new ArrayList<Float>();
+		
+		for (int i = 0; i < list.size(); i++) {
+			Float f = list.get(i).getZf();
+			if(f>=range[0] && f<=range[1]){
+				res.add(1f);
+			}else{
+				res.add(0f);
+			}
+		}
+		return res;
+	}
+	
 }

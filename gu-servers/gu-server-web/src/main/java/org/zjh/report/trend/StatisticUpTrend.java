@@ -25,14 +25,22 @@ public class StatisticUpTrend {
 	}
 	
 	public static Float statistic(List<GpHq> list){
+		
 		List<Float> ca = StatisticUtil.countAvg(list, 1);
 		Float v = sum(ca);
+		//均线多头排列
 		List<Float> au = StatisticUtil.countAvgUp(list, new int[]{1,2});
 		v = v + sum(au);
+		//涨幅
 		List<Float> ur = StatisticUtil.countUpRange(list, new float[]{2f,5f});
 		v = v + sum(ur);
-		List<Float> ly = StatisticUtil.countLianyang(list);
-		v = v + sum(ly);
+		//振幅
+		List<Float> zf = StatisticUtil.countZFRange(list, new float[]{2f,5f});
+		v = v + sum(zf);
+		//连阳
+		//List<Float> ly = StatisticUtil.countLianyang(list);
+		//v = v + sum(ly);
+		//统计收盘是否大于均线
 		List<Float> ga = StatisticUtil.countGtAvg(list,1);
 		v = v + sum(ga);
 		
