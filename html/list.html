@@ -18,7 +18,7 @@
 <body>
 <div class="content">
 	<div>
-	分值过滤：<input type="text" v-model="pageHelper.params.score" maxlength="5" value="25" >
+	分值过滤：<input type="text" v-model="pageHelper.params.score" maxlength="5" value="15" >
 	<select v-model="pageHelper.pageSize" >
 		<option value="10">10</option>
 		<option value="30">30</option>
@@ -46,8 +46,8 @@
             //页面 分页工具变量
             pageHelper: {
                 page: 1, //当前页面 初始化
-                pageSize: 10,		//页面展示条数初始化
-				params:{sort:"score desc",score:25}
+                pageSize: 30,		//页面展示条数初始化
+				params:{sort:"score desc",score:''}
             },
 			category:[],
 			categorys:[],

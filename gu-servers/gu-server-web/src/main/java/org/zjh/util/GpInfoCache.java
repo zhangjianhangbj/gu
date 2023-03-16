@@ -15,7 +15,7 @@ public class GpInfoCache {
 			return;
 		}
 		for (int i = 0; i < list.size(); i++) {
-			String code = list.get(0).getCode();
+			String code = list.get(i).getCode();
 			map.put(code, list.get(i));
 		}
 	}

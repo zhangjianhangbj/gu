@@ -58,7 +58,7 @@ public class StatisticUtil {
 	}
 
 	/**
-	 * 统计是否大于均线
+	 * 统计每日收盘价是否大于均线
 	 * @param list 股票行情
 	 * @param da 统计均线周期  1 3日，2 5日， 3 10日，  4 20日 
 	 * @return
@@ -80,7 +80,7 @@ public class StatisticUtil {
 	}
 	
 	/**
-	 * 统计是否大于均线
+	 * 统计是否大于均线，均线多头排列
 	 * @param list 股票行情
 	 * @param da 统计均线周期  1 3日，2 5日， 3 10日，  4 20日 
 	 * @return

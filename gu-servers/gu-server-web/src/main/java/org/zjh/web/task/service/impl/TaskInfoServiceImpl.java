@@ -13,6 +13,7 @@ import org.zjh.report.util.StatisticUtil;
 import org.zjh.util.DateConvertUtil;
 import org.zjh.util.GpInfoCache;
 import org.zjh.web.gp.entity.GpHq;
+import org.zjh.web.gp.entity.GpInfo;
 import org.zjh.web.gp.service.IGpHqService;
 import org.zjh.web.gp.vo.GpInfoReq;
 import org.zjh.web.task.entity.TaskInfo;
@@ -56,7 +57,9 @@ public class TaskInfoServiceImpl extends ServiceImpl<TaskInfoMapper, TaskInfo> i
 		GpInfoReq gr = new GpInfoReq();
 		String startTime = DateConvertUtil.getYesterdayDate(day, "yyyy-MM-dd");
 		gr.setStartTime(startTime);
+		log.info("statisticAll start...");
 		List<GpHq> list = gpHqService.listByDate(gr);
+		log.info("statisticAll gphq size:"+list.size());
 		if(list ==null || list.size()==0){
 			return Result.success("没有结果");
 		}
@@ -64,22 +67,34 @@ public class TaskInfoServiceImpl extends ServiceImpl<TaskInfoMapper, TaskInfo> i
 		List<GpHq> hqlist = new ArrayList<GpHq>();
 		List<TaskReportGpPool> trgpList = new ArrayList<TaskReportGpPool>();
 		for (int i = 0; i < list.size(); i++) {
+			
+			GpInfo gp = GpInfoCache.getGpInfo(code);
+			if(gp == null){
+				continue;
+			}
+			
 			if(!code.equals(list.get(i).getCode())){
+				code = list.get(i).getCode();
+				
 				Float f = StatisticUpTrend.statistic(hqlist);
 				TaskReportGpPool trgp = new TaskReportGpPool();
-				trgp.setCategory(GpInfoCache.getGpInfo(code).getCategory());
-				trgp.setExchange(GpInfoCache.getGpInfo(code).getExchange());
-				trgp.setName(GpInfoCache.getGpInfo(code).getName());
-				trgp.setCode(code);
+				
+				if(f<=10f){
+					continue;
+				}
+				trgp.setCategory(gp.getCategory());
+				trgp.setExchange(gp.getExchange());
+				trgp.setName(gp.getName());
+				trgp.setCode(gp.getCode());
 				trgp.setScore(f);
 				trgp.setCreateTime(new Date());
 				trgpList.add(trgp);
 				hqlist.clear();
-				code = list.get(i).getCode();
+				
 			}
 			hqlist.add(list.get(i));
 		}
-		
+		log.info("statisticAll save ...");
 		saveReportGpPool(trgpList);
 		return Result.success("统计结果:"+trgpList.size()+"条");
 	}
@@ -90,7 +105,7 @@ public class TaskInfoServiceImpl extends ServiceImpl<TaskInfoMapper, TaskInfo> i
 			ls.add(trgpList.get(i));
 			if(ls.size()>=500){
 				log.info("add TaskReportGpPool {}/{}",i,trgpList.size());
-				boolean b = taskReportGpPoolService.saveBatch(trgpList);
+				boolean b = taskReportGpPoolService.saveBatch(ls);
 				ls = new ArrayList<TaskReportGpPool>();
 			}
 		}

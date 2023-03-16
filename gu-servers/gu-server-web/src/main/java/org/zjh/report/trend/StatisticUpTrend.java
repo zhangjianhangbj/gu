@@ -35,7 +35,7 @@ public class StatisticUpTrend {
 		List<Float> ur = StatisticUtil.countUpRange(list, new float[]{2f,5f});
 		v = v + sum(ur);
 		//振幅
-		List<Float> zf = StatisticUtil.countZFRange(list, new float[]{2f,5f});
+		List<Float> zf = StatisticUtil.countZFRange(list, new float[]{4f,15f});
 		v = v + sum(zf);
 		//连阳
 		//List<Float> ly = StatisticUtil.countLianyang(list);
